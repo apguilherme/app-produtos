@@ -57,7 +57,7 @@ export default function Profile({ setUserToken, userToken, userId }) {
 
             {
                 erro.length > 0 &&
-                erro
+                <Text>{erro}</Text>
             }
         </View>
     )

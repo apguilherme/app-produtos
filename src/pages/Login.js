@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { Text, View, TextInput, Button } from 'react-native'
+import { Text, View, TextInput, Button, StyleSheet } from 'react-native'
 
 import api from '../services/api'
 
@@ -27,9 +27,8 @@ export default function Login({ setUserToken }) {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Login</Text>
 
-            <Text>Email</Text>
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: '90%' }}
+                style={styles.txtInput}
                 autoCapitalize='none'
                 autoCompleteType='email'
                 placeholder='E-mail'
@@ -37,9 +36,8 @@ export default function Login({ setUserToken }) {
                 value={email}
             />
 
-            <Text>Senha</Text>
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: '90%' }}
+                style={styles.txtInput}
                 autoCapitalize='none'
                 autoCompleteType='password'
                 placeholder='Senha'
@@ -55,8 +53,17 @@ export default function Login({ setUserToken }) {
                 accessibilityLabel="Entrar"
             />
 
-            <Text>{erro.length > 0 && erro}</Text>
+            {
+                erro.length > 0 && 
+                <Text>{erro}</Text>
+            }
 
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    txtInput: {
+        height: 40, borderColor: 'gray', borderWidth: 1, width: '90%', margin: '1%',
+    }
+})

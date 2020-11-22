@@ -3,7 +3,11 @@ import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 
+import { LogBox } from "react-native"
+
 AppRegistry.registerComponent(appName, () => App);
+
+//LogBox.ignoreAllLogs(true)
 
 // set PATH=%PATH%;D:\Android\Sdk\platform-tools
 // set JAVA_HOME=D:\Java\jdk-15.0.1

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View } from 'react-native'
+import { SafeAreaView, FlatList, StyleSheet } from 'react-native'
+
+import Produto from '../components/Produto'
 
 import api from '../services/api'
 
-export default function Home() {
+export default function Home({ userToken }) {
 
     const [products, setProducts] = useState([])
     const [erro, setErro] = useState('')
@@ -13,7 +15,7 @@ export default function Home() {
         await api.get('/produto',
             {
                 headers: {
-                    'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYjcwOWNhYzA3N2Y2MTI1YzQwM2E3YSIsImlhdCI6MTYwNTk4ODE5OSwiZXhwIjoxNjA2MDc0NTk5fQ.ZTz8IU_D48MlpFbXs2n4PnYylfIXZJMTLww7FCEl8yo'
+                    'x-access-token': `${userToken}`
                 }
             }
         ).then(dados => setProducts(dados.data)).catch(err => setErro(err))
@@ -23,24 +25,31 @@ export default function Home() {
         getProducts()
     }, [])
 
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Feed</Text>
+    const renderProduto = ({ item }) => (
+        <Produto produto={item} />
+    )
 
+    return (
+        <SafeAreaView style={styles.container}>
             {
                 products.length > 0 &&
-                <View>
-                {
-                    products.map(produto => <Text key={produto._id}>{produto.nomeProduto} - {produto.descricao}</Text>)
-                }
-                </View>
+                <FlatList
+                    data={products}
+                    renderItem={renderProduto}
+                    keyExtractor={item => item._id}
+                />
             }
-
             {
                 erro.length > 0 &&
-                erro
+                <Text>{erro}</Text>
             }
-
-        </View>
+        </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+    },
+})

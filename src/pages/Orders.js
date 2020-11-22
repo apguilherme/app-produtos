@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from 'react'
-import { Text, View } from 'react-native'
+import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native'
+
+import Pedido from '../components/Pedido'
 
 import api from '../services/api'
 
@@ -18,7 +20,11 @@ export default function Orders({ userToken, userId }) {
                 }
             }
         ).then(dados => {
+            setErro('')
             setPedidos(dados.data)
+            if (dados.data.length === 0){
+                setErro('Nenhum item adicionado ao carrinho.')
+            }
             //console.warn(dados.data)
         }).catch(err => setErro(err))
     }
@@ -27,18 +33,31 @@ export default function Orders({ userToken, userId }) {
         getPedidos()
     }, [])
 
+    const renderProduto = ({ item }) => (
+        <Pedido produto={item} />
+    )
+
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Orders - {userId}</Text>
-
+        <SafeAreaView style={styles.container}>
             {
-                pedidos.map(pedidos => <Text>{pedidos._id} - {pedidos.id_usuarioComprador.nomeUser}</Text>)
+                pedidos.length > 0 &&
+                <FlatList
+                    data={pedidos}
+                    renderItem={renderProduto}
+                    keyExtractor={item => item._id}
+                />
             }
-
             {
                 erro.length > 0 &&
-                erro
+                <Text>{erro}</Text>
             }
-        </View>
+        </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+    },
+})
