@@ -5,7 +5,7 @@ import Produto from '../components/Produto'
 
 import api from '../services/api'
 
-export default function Home({ userToken }) {
+export default function Home({ userToken, userId }) {
 
     const [products, setProducts] = useState([])
     const [erro, setErro] = useState('')
@@ -25,17 +25,36 @@ export default function Home({ userToken }) {
         setLoading(false)
     }
 
+    // post pedido de produto para user
+    async function postPedido(idProduto) {
+        setErro('')
+        setLoading(true)
+        await api.post('/pedido',
+            {
+                "id_usuarioComprador": `${userId}`,
+                "id_produto": `${idProduto}`,
+                "quantidadePedido": "1"
+            },
+            {
+                headers: {
+                    'x-access-token': `${userToken}`
+                }
+            }
+        ).then(dados => setErro('')).catch(err => setErro(err))
+        setLoading(false)
+    }
+
     useEffect(() => {
         getProducts()
     }, [])
 
     const renderProduto = ({ item }) => (
-        <Produto produto={item} />
+        <Produto produto={item} postPedido={postPedido} idProduto={item._id} />
     )
 
     return (
         <SafeAreaView style={styles.container}>
-            
+
             {
                 loading &&
                 <View><ActivityIndicator size="large" color="#FF9052" /></View>
@@ -60,6 +79,7 @@ export default function Home({ userToken }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
 })

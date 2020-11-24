@@ -33,12 +33,28 @@ export default function Orders({ userToken, userId }) {
         setLoading(false)
     }
 
+    // del pedido
+    async function delPedido(idPedido) {
+        setErro('')
+        setLoading(true)
+        await api.delete(`/pedido/${idPedido}`,
+            {
+                headers: {
+                    'x-access-token': `${userToken}`
+                }
+            }
+        )
+        .then(dados => getPedidos()) // faz request novamente para atualizar lista de pedidos após remoção
+        .catch(err => setErro(err))
+        setLoading(false)
+    }
+
     useEffect(() => {
         getPedidos()
     }, [])
 
     const renderProduto = ({ item }) => (
-        <Pedido produto={item} />
+        <Pedido produto={item} delPedido={delPedido} idPedido={item._id} />
     )
 
     return (
@@ -68,6 +84,7 @@ export default function Orders({ userToken, userId }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
 })

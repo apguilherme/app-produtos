@@ -4,14 +4,9 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt'
 
-export default function Produto({ produto }) {
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-    // TODO: botão para adicionar produto ao carrinho - post /pedido + token
-    /*{
-        "id_usuarioComprador": "5fb70ae6c077f6125c403a7c",
-        "id_produto": "5fb839128fd15d1aa8eac041",
-        "quantidadePedido": "20"
-    }*/
+export default function Produto({ produto, postPedido, idProduto }) {
 
     return (
         <View style={styles.card}>
@@ -48,7 +43,7 @@ export default function Produto({ produto }) {
 
                 </View>
 
-                <Text style={{ color: 'gray' }}>Descrição: {produto.descricao}</Text>
+                <Text style={{ color: 'gray', flexShrink: 1 }}>Descrição: {produto.descricao}</Text>
 
             </View>
 
@@ -59,8 +54,9 @@ export default function Produto({ produto }) {
                 <TouchableOpacity onPress={() => console.warn('Detalhes em breve...')} style={styles.btn}>
                     <Text style={styles.btnText}>Detalhes</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => console.warn('Carrinho em breve...')} style={styles.btn}>
-                    <Text style={styles.btnText}>Adicionar ao carrinho</Text>
+
+                <TouchableOpacity onPress={() => postPedido(idProduto)} style={styles.btn}>
+                    <Text style={styles.btnText}>Adicionar ao carrinho <FontAwesome5 name={'cart-arrow-down'} /></Text>
                 </TouchableOpacity>
 
             </View>
@@ -115,6 +111,7 @@ const styles = StyleSheet.create({
     },
     btnText: {
         color: '#fff',
+        fontSize: 16,
     },
     title: {
         fontSize: 18,

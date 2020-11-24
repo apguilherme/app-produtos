@@ -6,7 +6,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import moment from 'moment'
 import 'moment/locale/pt'
 
-export default function Pedido({ produto }) {
+export default function Pedido({ produto, delPedido, idPedido }) {
     return (
         <View style={styles.card}>
 
@@ -16,7 +16,7 @@ export default function Pedido({ produto }) {
 
                     <Image style={styles.imagemProduto} source={{ uri: `${produto.id_produto.linkImagem}` }} />
 
-                    <View style={{ marginLeft: 10, }}>
+                    <View style={{ marginLeft: 10, flexShrink: 1 }}>
                         <Text style={styles.title}>{produto.id_produto.nomeProduto}</Text>
                         <Text style={styles.subtitle}>Descrição: {produto.id_produto.descricao}</Text>
                         <Text style={styles.subtitle}>Qualidade: {produto.id_produto.qualidade}</Text>
@@ -30,19 +30,17 @@ export default function Pedido({ produto }) {
 
             </View>
 
-            <Text style={styles.divider}></Text>
+            <View style={styles.groupBtn}>
 
-            <View style={styles.group}>
-
-                <TouchableOpacity onPress={() => console.warn('Remover em breve...')} style={styles.btn}>
+                <TouchableOpacity onPress={() => delPedido(idPedido)} style={styles.btn}>
                     <Text style={styles.btnText}>Remover <FontAwesome5 name={'trash-alt'} /></Text>
                 </TouchableOpacity>
 
-            </View>
+                <TouchableOpacity onPress={() => console.warn('Finalizar em breve...')} style={styles.btnEnd}>
+                    <Text style={styles.btnTextEnd}>Finalizar compra <FontAwesome5 name={'shopping-bag'} /></Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.warn('Finalizar em breve...')} style={styles.btnEnd}>
-                <Text style={styles.btnTextEnd}>Finalizar compra <FontAwesome5 name={'shopping-bag'} /></Text>
-            </TouchableOpacity>
+            </View>
 
         </View>
     )
@@ -78,6 +76,13 @@ const styles = StyleSheet.create({
         padding: 15,
         margin: 1,
     },
+    groupBtn: {
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 15,
+        margin: 1,
+    },
     btn: {
         borderRadius: 5,
         borderColor: 'red',
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     btnEnd: {
         borderRadius: 5,
         backgroundColor: '#3CB371',
-        padding: 15,
+        padding: 12,
         marginBottom: 0,
     },
     btnText: {
@@ -104,5 +109,6 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 10,
+        flexShrink: 1,
     },
 })

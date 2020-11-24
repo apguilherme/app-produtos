@@ -79,7 +79,7 @@ export default function App() {
       {
         isLogged &&
         <>
-          <Tab.Screen name="Feed" component={() => <Home userToken={userToken.token} />} />
+          <Tab.Screen name="Feed" component={() => <Home userToken={userToken.token} userId={userToken._id} />} />
           <Tab.Screen name="Pedidos" component={() => <Orders userToken={userToken.token} userId={userToken._id} />} />
           <Tab.Screen name="Perfil" component={() => <Profile setUserToken={setUserToken} userToken={userToken} userId={userToken._id} />} />
         </>
