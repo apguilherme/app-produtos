@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { Text, KeyboardAvoidingView, Platform, TextInput, Button, StyleSheet, ActivityIndicator, View } from 'react-native'
+import { Text, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, View } from 'react-native'
 
 import api from '../services/api'
 
@@ -110,12 +110,9 @@ export default function CadastroUser() {
                 value={cnpj}
             />
 
-            <Button
-                onPress={cadastroUser}
-                title="Cadastrar"
-                color="#FF9052"
-                accessibilityLabel="Cadastrar"
-            />
+            <TouchableOpacity onPress={() => cadastroUser()} style={styles.btn} >
+                <Text style={{ fontSize: 16, color: '#fff' }}>Cadastrar</Text>
+            </TouchableOpacity>
 
             {
                 loading &&
@@ -132,6 +129,18 @@ export default function CadastroUser() {
 
 const styles = StyleSheet.create({
     txtInput: {
-        height: 40, borderColor: 'gray', borderWidth: 1, width: '90%', margin: '1%',
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: '90%',
+        margin: '1%',
+        borderRadius: 5,
+    },
+    btn: {
+        backgroundColor: "#FF9052",
+        padding: 10,
+        borderRadius: 5,
+        width: '90%',
+        alignItems: 'center'
     }
 })

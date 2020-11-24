@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { Text, View, TextInput, Button, StyleSheet, ActivityIndicator } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
 
 import api from '../services/api'
 
@@ -27,7 +27,7 @@ export default function Login({ setUserToken }) {
     }
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.container}>
             <Text>Login</Text>
 
             <TextInput
@@ -49,12 +49,9 @@ export default function Login({ setUserToken }) {
                 value={senha}
             />
 
-            <Button
-                onPress={loginUser}
-                title="Entrar"
-                color="#FF9052"
-                accessibilityLabel="Entrar"
-            />
+            <TouchableOpacity onPress={() => loginUser()} style={styles.btn} >
+                <Text style={{ fontSize: 16, color: '#fff' }}>Entrar</Text>
+            </TouchableOpacity>
 
             {
                 loading &&
@@ -71,7 +68,25 @@ export default function Login({ setUserToken }) {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        margin: 10
+    },
     txtInput: {
-        height: 40, borderColor: 'gray', borderWidth: 1, width: '90%', margin: '1%',
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1, 
+        width: '90%', 
+        margin: '1%',
+        borderRadius: 5,
+    },
+    btn:{
+        backgroundColor: "#FF9052",
+        padding: 10,
+        borderRadius: 5,
+        width: '90%',
+        alignItems: 'center'
     }
 })
