@@ -21,7 +21,7 @@ export default function Produto({ produto }) {
                 <Image style={styles.imagemUser} source={{ uri: 'https://digimedia.web.ua.pt/wp-content/uploads/2017/05/default-user-image.png' }} />
 
                 <View>
-                    <Text style={{ fontSize: 16 }}>Anunciado por {produto.id_usuarioVendedor.nomeUser}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', }}>Anunciado por {produto.id_usuarioVendedor.nomeUser}</Text>
                     <Text style={{ color: 'gray' }}>{moment(produto.createdAt).calendar()}</Text>
                     <Text style={{ color: 'gray' }}>Em {produto.enderecoProduto}</Text>
                 </View>
@@ -97,8 +97,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 15,
         marginRight: 15,
-        marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 5,
     },
     group: {
         flexDirection: 'row',
@@ -106,10 +105,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         padding: 5,
         margin: 5,
+        marginTop: 15,
     },
     btn: {
         borderRadius: 5,
-        backgroundColor: '#2196F3',
+        backgroundColor: '#4682B4',
         padding: 10,
         marginBottom: 10,
     },
@@ -118,5 +118,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
+        fontWeight: 'bold',
     },
 })

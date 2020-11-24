@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react'
-import { Text, KeyboardAvoidingView, Platform, TextInput, Button, StyleSheet } from 'react-native'
+import { Text, KeyboardAvoidingView, Platform, TextInput, Button, StyleSheet, ActivityIndicator, View } from 'react-native'
 
 import api from '../services/api'
 
 export default function CadastroUser() {
 
     const [erro, setErro] = useState('')
+    const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState('')
     const [nome, onChangeNome] = useState('')
     const [email, onChangeEmail] = useState('')
@@ -18,6 +19,8 @@ export default function CadastroUser() {
 
     // cadastro de usuário
     async function cadastroUser() {
+        setErro('')
+        setLoading(true)
         await api.post('/auth/user',
             {
                 "nomeUser": `${nome}`,
@@ -42,6 +45,7 @@ export default function CadastroUser() {
             setErro("Algo deu errado! " + err)
             setSuccess('')
         })
+        setLoading(false)
     }
 
     return (
@@ -112,6 +116,11 @@ export default function CadastroUser() {
                 color="#FF9052"
                 accessibilityLabel="Cadastrar"
             />
+
+            {
+                loading &&
+                <View><ActivityIndicator size="large" color="#FF9052" /></View>
+            }
 
             <Text>{erro.length > 0 && erro}</Text>
 

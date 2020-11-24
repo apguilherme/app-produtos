@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, FlatList, StyleSheet } from 'react-native'
+import { SafeAreaView, FlatList, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 import Produto from '../components/Produto'
 
@@ -9,9 +9,12 @@ export default function Home({ userToken }) {
 
     const [products, setProducts] = useState([])
     const [erro, setErro] = useState('')
+    const [loading, setLoading] = useState(false)
 
     // get products
     async function getProducts() {
+        setErro('')
+        setLoading(true)
         await api.get('/produto',
             {
                 headers: {
@@ -19,6 +22,7 @@ export default function Home({ userToken }) {
                 }
             }
         ).then(dados => setProducts(dados.data)).catch(err => setErro(err))
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -31,6 +35,12 @@ export default function Home({ userToken }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            
+            {
+                loading &&
+                <View><ActivityIndicator size="large" color="#FF9052" /></View>
+            }
+
             {
                 products.length > 0 &&
                 <FlatList

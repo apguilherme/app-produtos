@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     },
     btnEnd: {
         borderRadius: 5,
-        backgroundColor: 'green',
+        backgroundColor: '#3CB371',
         padding: 15,
         marginBottom: 0,
     },

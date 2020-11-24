@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native'
+import { Text, SafeAreaView, FlatList, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 import Pedido from '../components/Pedido'
 
@@ -10,9 +10,12 @@ export default function Orders({ userToken, userId }) {
 
     const [pedidos, setPedidos] = useState([])
     const [erro, setErro] = useState('')
+    const [loading, setLoading] = useState(false)
 
     // get pedidos do user
     async function getPedidos() {
+        setErro('')
+        setLoading(true)
         await api.get(`/pedido/user/${userId}`,
             {
                 headers: {
@@ -27,6 +30,7 @@ export default function Orders({ userToken, userId }) {
             }
             //console.warn(dados.data)
         }).catch(err => setErro(err))
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -39,6 +43,12 @@ export default function Orders({ userToken, userId }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            
+            {
+                loading &&
+                <View><ActivityIndicator size="large" color="#FF9052" /></View>
+            }
+
             {
                 pedidos.length > 0 &&
                 <FlatList
