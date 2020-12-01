@@ -1,13 +1,26 @@
-import React from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, Image, StyleSheet, TouchableOpacity, Picker, TextInput } from 'react-native'
 
 import moment from 'moment'
 import 'moment/locale/pt'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-export default function Produto({ produto, postPedido, idProduto }) {
+import ModalForm from './ModalForm'
 
+export default function Produto({ userId, produto, idProduto, delProd, postPedido, editProd, categorias }) {
+
+    // states para editar produto
+    const [nomeProduto, setNomeProduto] = useState(produto.nomeProduto)
+    const [unidadeMedida, setUnidadeMedida] = useState(produto.unidadeMedida)
+    const [qualidade, setQualidade] = useState(produto.qualidade)
+    const [descricao, setDescricao] = useState(produto.descricao)
+    const [valorUnitario, setValorUnitario] = useState(produto.valorUnitario)
+    const [enderecoProduto, setEnderecoProduto] = useState(produto.enderecoProduto)
+    const [id_categoriaProduto, setId_categoriaProduto] = useState(produto.id_categoriaProduto._id)
+    const [linkImagem, setLinkImagem] = useState(produto.linkImagem)
+    const [quantidadeEstoque, setQuantidadeEstoque] = useState(produto.quantidadeEstoque)
+    
     return (
         <View style={styles.card}>
 
@@ -36,7 +49,7 @@ export default function Produto({ produto, postPedido, idProduto }) {
                     <Image style={styles.imagemProduto} source={{ uri: `${produto.linkImagem}` }} />
 
                     <View>
-                        <Text style={{fontWeight: 'bold'}}>R$ {parseFloat(produto.valorUnitario).toFixed(2)}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>R$ {parseFloat(produto.valorUnitario).toFixed(2)}</Text>
                         <Text>{produto.id_categoriaProduto.nomeCategoriaProduto}</Text>
                         <Text>Em estoque: {produto.quantidadeEstoque}</Text>
                     </View>
@@ -51,13 +64,119 @@ export default function Produto({ produto, postPedido, idProduto }) {
 
             <View style={styles.group}>
 
-                <TouchableOpacity onPress={() => console.warn('Detalhes em breve...')} style={styles.btn}>
-                    <Text style={styles.btnText}>Detalhes</Text>
-                </TouchableOpacity>
+                {
+                    produto.id_usuarioVendedor._id === userId && editProd && // pode editar
+                    <ModalForm
+                        btnStyle={styles.btnEdit}
+                        btnTxt={'Editar'}
+                        btnTxtStyle={styles.btnText}
+                        icon={'edit'}
+                    >
 
-                <TouchableOpacity onPress={() => postPedido(idProduto)} style={styles.btn}>
-                    <Text style={styles.btnText}>Adicionar ao carrinho <FontAwesome5 name={'cart-arrow-down'} /></Text>
-                </TouchableOpacity>
+                        <>
+                            <Text style={styles.modalText}>Editar produto</Text>
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Nome do produto'
+                                onChangeText={text => setNomeProduto(text)}
+                                value={nomeProduto}
+                            />
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Descrição'
+                                onChangeText={text => setDescricao(text)}
+                                value={descricao}
+                            />
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Valor unitário: R$ 4,00'
+                                onChangeText={text => setValorUnitario(text)}
+                                value={valorUnitario}
+                            />
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Endereço do produto'
+                                onChangeText={text => setEnderecoProduto(text)}
+                                value={enderecoProduto}
+                            />
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Link para a imagem'
+                                onChangeText={text => setLinkImagem(text)}
+                                value={linkImagem}
+                            />
+
+                            <TextInput
+                                style={styles.txtInput}
+                                placeholder='Quantidade em estoque'
+                                onChangeText={text => setQuantidadeEstoque(text)}
+                                value={String(quantidadeEstoque)}
+                            />
+
+                            <Picker
+                                selectedValue={unidadeMedida}
+                                style={{ height: 50, width: '90%' }}
+                                onValueChange={(itemValue, itemIndex) => setUnidadeMedida(itemValue)}
+                            >
+                                <Picker.Item label='Unidade...' value='' />
+                                <Picker.Item label='kg' value='kg' />
+                                <Picker.Item label='cm' value='cm' />
+                                <Picker.Item label='m' value='m' />
+                                <Picker.Item label='m2' value='m2' />
+                                <Picker.Item label='m3' value='m3' />
+                            </Picker>
+
+                            <Picker
+                                selectedValue={qualidade}
+                                style={{ height: 50, width: '90%' }}
+                                onValueChange={(itemValue, itemIndex) => setQualidade(itemValue)}
+                            >
+                                <Picker.Item label='Qualidade...' value='' />
+                                <Picker.Item label='Novo' value='Novo' />
+                                <Picker.Item label='Semi-novo' value='Semi-novo' />
+                                <Picker.Item label='Com defeito' value='Com defeito' />
+                                <Picker.Item label='Quebrado' value='Quebrado' />
+                                <Picker.Item label='Velho' value='Velho' />
+                            </Picker>
+
+                            <Picker
+                                selectedValue={id_categoriaProduto}
+                                style={{ height: 50, width: '90%' }}
+                                onValueChange={(itemValue, itemIndex) => setId_categoriaProduto(itemValue)}
+                            >
+                                <Picker.Item label='Categoria...' value='' />
+                                {
+                                    categorias.map(item => (
+                                        <Picker.Item label={`${item.nomeCategoriaProduto}`} value={`${item._id}`} />
+                                    ))
+                                }
+                            </Picker>
+
+                            <TouchableOpacity onPress={() => editProd({nomeProduto, unidadeMedida, qualidade, descricao, valorUnitario, enderecoProduto, id_categoriaProduto, linkImagem, quantidadeEstoque, userId, idProduto})} style={styles.btnAdd}>
+                                <Text style={{ fontSize: 16, color: 'white' }}>Salvar  <FontAwesome5 name={'edit'} /></Text>
+                            </TouchableOpacity>
+
+                        </>
+
+                    </ModalForm>
+                }
+                {
+                    produto.id_usuarioVendedor._id === userId && delProd && // pode apagar anuncio
+                    <TouchableOpacity onPress={() => delProd(idProduto)} style={styles.btnDel}>
+                        <Text style={styles.btnText}>Apagar anuncio <FontAwesome5 name={'trash-alt'} /></Text>
+                    </TouchableOpacity>
+                }
+                {
+                    produto.id_usuarioVendedor._id !== userId && postPedido && // pode add ao carrinho
+                    <TouchableOpacity onPress={() => postPedido(idProduto)} style={styles.btnAdd}>
+                        <Text style={styles.btnText}>Adicionar ao carrinho <FontAwesome5 name={'cart-arrow-down'} /></Text>
+                    </TouchableOpacity>
+                }
 
             </View>
 
@@ -103,9 +222,21 @@ const styles = StyleSheet.create({
         margin: 5,
         marginTop: 15,
     },
-    btn: {
+    btnAdd: {
         borderRadius: 5,
         backgroundColor: '#4682B4',
+        padding: 10,
+        marginBottom: 10,
+    },
+    btnEdit: {
+        borderRadius: 5,
+        backgroundColor: 'gray',
+        padding: 10,
+        marginBottom: 10,
+    },
+    btnDel: {
+        borderRadius: 5,
+        backgroundColor: 'red',
         padding: 10,
         marginBottom: 10,
     },
@@ -116,5 +247,13 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    txtInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: '90%',
+        margin: '1%',
+        borderRadius: 5,
     },
 })

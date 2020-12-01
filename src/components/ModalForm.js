@@ -1,33 +1,33 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Alert, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native"
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-export default function App() {
+export default function ModalForm(props) {
 
     const [modalVisible, setModalVisible] = useState(false)
 
     return (
         <View>
 
-            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { Alert.alert("Modal has been closed.") }} >
+            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { Alert.alert("Clique em fechar.") }} >
 
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
 
-                        <Text style={styles.modalText}>Em breve poderá adicionar produtos...</Text>
-
                         <TouchableHighlight style={{ ...styles.openButton, backgroundColor: "#2196F3" }} onPress={() => { setModalVisible(!modalVisible) }} >
                             <Text style={styles.textStyle}>Fechar</Text>
                         </TouchableHighlight>
+
+                        {props.children}
 
                     </View>
                 </View>
 
             </Modal>
 
-            <TouchableOpacity onPress={() => { setModalVisible(true) }} style={styles.btnAdd}>
-                <Text style={{ fontSize: 16, color: '#fff' }}>Adicionar produto <FontAwesome5 name={'plus-circle'} /></Text>
+            <TouchableOpacity onPress={() => { setModalVisible(true) }} style={props.btnStyle}>
+                <Text style={props.btnTxtStyle}>{props.btnTxt} <FontAwesome5 name={props.icon} /></Text>
             </TouchableOpacity>
 
         </View>
@@ -60,15 +60,5 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    },
-    btnAdd: {
-        borderRadius: 5,
-        backgroundColor: '#3CB371',
-        padding: 10,
-        marginBottom: 0,
     },
 })

@@ -49,7 +49,7 @@ export default function Home({ userToken, userId }) {
     }, [])
 
     const renderProduto = ({ item }) => (
-        <Produto produto={item} postPedido={postPedido} idProduto={item._id} />
+        <Produto userId={userId} produto={item} postPedido={postPedido} idProduto={item._id} />
     )
 
     return (
