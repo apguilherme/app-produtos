@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+
+import ModalForm from '../components/ModalForm'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
@@ -7,6 +9,7 @@ import moment from 'moment'
 import 'moment/locale/pt'
 
 export default function Pedido({ produto, delPedido, idPedido }) {
+
     return (
         <View style={styles.card}>
 
@@ -36,9 +39,40 @@ export default function Pedido({ produto, delPedido, idPedido }) {
                     <Text style={styles.btnText}>Remover <FontAwesome5 name={'trash-alt'} /></Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => console.warn('Finalizar em breve...')} style={styles.btnEnd}>
-                    <Text style={styles.btnTextEnd}>Finalizar compra <FontAwesome5 name={'shopping-bag'} /></Text>
-                </TouchableOpacity>
+                <ModalForm
+                    btnStyle={styles.btnEnd}
+                    btnTxt={'Finalizar'}
+                    btnTxtStyle={styles.btnTxtStyle}
+                    icon={'shopping-bag'}
+                >
+                    <>
+                        <Text style={{...styles.modalText, fontWeight: 'bold', fontSize: 20}}>Finalizar compra?</Text>
+
+                        <Image style={styles.imagemProdutoEnd} source={{ uri: `${produto.id_produto.linkImagem}` }} />
+
+                        <View style={styles.group}>
+
+                            <View style={{alignItems: 'flex-start'}}>
+                                <Text style={{ ...styles.modalText, fontWeight: 'bold' }}>Produto</Text>
+                                <Text style={styles.modalText}>{produto.quantidadePedido} {produto.id_produto.unidadeMedida} x {produto.id_produto.nomeProduto}</Text>
+                            </View>
+
+                            <View style={{alignItems: 'flex-start', marginLeft: 25}}>
+                                <Text style={{ ...styles.modalText, fontWeight: 'bold' }}>Total</Text>
+                                <Text style={styles.modalText}>R$ {parseFloat(produto.id_produto.valorUnitario).toFixed(2)}</Text>
+                            </View>
+
+                        </View>
+
+                        <Text style={{...styles.subtitle, marginBottom: 25}}>ID Pedido: {idPedido}</Text>
+
+                        <TouchableOpacity onPress={() => console.warn('Compra efetuada!')} style={styles.btnEnd}>
+                            <Text style={styles.btnTextEnd}>Finalizar compra <FontAwesome5 name={'shopping-bag'} /></Text>
+                        </TouchableOpacity>
+                    </>
+
+                </ModalForm>
+
 
             </View>
 
@@ -50,6 +84,11 @@ const styles = StyleSheet.create({
     imagemProduto: {
         width: 120,
         height: 120,
+        borderRadius: 10,
+    },
+    imagemProdutoEnd: {
+        width: 60,
+        height: 60,
         borderRadius: 10,
     },
     card: {
@@ -110,5 +149,14 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 10,
         flexShrink: 1,
+        margin: 2,
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    btnTxtStyle: {
+        fontSize: 16,
+        color: '#fff',
     },
 })

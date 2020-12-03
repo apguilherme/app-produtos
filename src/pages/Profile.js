@@ -43,7 +43,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
             setUser(dados.data)
             getUserProds()
             getProdCategorias()
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -61,7 +60,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
         await api.post('/auth/logout')
             .then(dados => {
                 setUserToken(dados.data)
-                //console.warn(dados.data)
             }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -107,7 +105,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
             if (dados.data.length === 0) {
                 setErro('Nenhum produto encontrado.')
             }
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -124,7 +121,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
             }
         ).then(dados => {
             setCategorias(dados.data)
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -141,7 +137,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
             }
         ).then(dados => {
             getUserProds()
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -171,7 +166,6 @@ export default function Profile({ setUserToken, userToken, userId }) {
             }
         ).then(dados => {
             getUserProds()
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
@@ -221,7 +215,7 @@ export default function Profile({ setUserToken, userToken, userId }) {
                                 icon={'plus-circle'}
                             >
                                 <>
-                                    <Text style={styles.modalText}>Adicionar produto</Text>
+                                    <Text style={{...styles.modalText, fontWeight: 'bold', fontSize: 20}}>Adicionar produto</Text>
 
                                     <TextInput
                                         style={styles.txtInput}
@@ -271,6 +265,7 @@ export default function Profile({ setUserToken, userToken, userId }) {
                                         onValueChange={(itemValue, itemIndex) => setUnidadeMedida(itemValue)}
                                     >
                                         <Picker.Item label='Unidade...' value='' />
+                                        <Picker.Item label='unidades' value='unidades' />
                                         <Picker.Item label='kg' value='kg' />
                                         <Picker.Item label='cm' value='cm' />
                                         <Picker.Item label='m' value='m' />

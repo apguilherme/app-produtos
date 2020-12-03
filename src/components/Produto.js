@@ -20,7 +20,7 @@ export default function Produto({ userId, produto, idProduto, delProd, postPedid
     const [id_categoriaProduto, setId_categoriaProduto] = useState(produto.id_categoriaProduto._id)
     const [linkImagem, setLinkImagem] = useState(produto.linkImagem)
     const [quantidadeEstoque, setQuantidadeEstoque] = useState(produto.quantidadeEstoque)
-    
+
     return (
         <View style={styles.card}>
 
@@ -51,7 +51,7 @@ export default function Produto({ userId, produto, idProduto, delProd, postPedid
                     <View>
                         <Text style={{ fontWeight: 'bold' }}>R$ {parseFloat(produto.valorUnitario).toFixed(2)}</Text>
                         <Text>{produto.id_categoriaProduto.nomeCategoriaProduto}</Text>
-                        <Text>Em estoque: {produto.quantidadeEstoque}</Text>
+                        <Text>Em estoque: {produto.quantidadeEstoque} {produto.unidadeMedida}</Text>
                     </View>
 
                 </View>
@@ -74,7 +74,7 @@ export default function Produto({ userId, produto, idProduto, delProd, postPedid
                     >
 
                         <>
-                            <Text style={styles.modalText}>Editar produto</Text>
+                            <Text style={{...styles.modalText, fontWeight: 'bold', fontSize: 20}}>Editar produto</Text>
 
                             <TextInput
                                 style={styles.txtInput}
@@ -124,6 +124,7 @@ export default function Produto({ userId, produto, idProduto, delProd, postPedid
                                 onValueChange={(itemValue, itemIndex) => setUnidadeMedida(itemValue)}
                             >
                                 <Picker.Item label='Unidade...' value='' />
+                                <Picker.Item label='unidades' value='unidades' />
                                 <Picker.Item label='kg' value='kg' />
                                 <Picker.Item label='cm' value='cm' />
                                 <Picker.Item label='m' value='m' />
@@ -157,7 +158,7 @@ export default function Produto({ userId, produto, idProduto, delProd, postPedid
                                 }
                             </Picker>
 
-                            <TouchableOpacity onPress={() => editProd({nomeProduto, unidadeMedida, qualidade, descricao, valorUnitario, enderecoProduto, id_categoriaProduto, linkImagem, quantidadeEstoque, userId, idProduto})} style={styles.btnAdd}>
+                            <TouchableOpacity onPress={() => editProd({ nomeProduto, unidadeMedida, qualidade, descricao, valorUnitario, enderecoProduto, id_categoriaProduto, linkImagem, quantidadeEstoque, userId, idProduto })} style={styles.btnAdd}>
                                 <Text style={{ fontSize: 16, color: 'white' }}>Salvar  <FontAwesome5 name={'edit'} /></Text>
                             </TouchableOpacity>
 

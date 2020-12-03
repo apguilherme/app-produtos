@@ -15,11 +15,11 @@ export default function ModalForm(props) {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
 
+                        {props.children}
+
                         <TouchableHighlight style={{ ...styles.openButton, backgroundColor: "#2196F3" }} onPress={() => { setModalVisible(!modalVisible) }} >
                             <Text style={styles.textStyle}>Fechar</Text>
                         </TouchableHighlight>
-
-                        {props.children}
 
                     </View>
                 </View>
@@ -52,9 +52,11 @@ const styles = StyleSheet.create({
     },
     openButton: {
         backgroundColor: "#F194FF",
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
+        elevation: 2,
+        borderRadius: 5,
+        padding: 12,
+        marginBottom: 0,
+        marginTop: 15,
     },
     textStyle: {
         color: "white",

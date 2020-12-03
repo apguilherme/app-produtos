@@ -28,7 +28,6 @@ export default function Orders({ userToken, userId }) {
             if (dados.data.length === 0){
                 setErro('Nenhum item adicionado ao carrinho.')
             }
-            //console.warn(dados.data)
         }).catch(err => setErro(err))
         setLoading(false)
     }
